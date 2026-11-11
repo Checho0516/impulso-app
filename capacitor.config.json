@@ -1,0 +1,8 @@
+{
+  "appId": "com.chechos_corp.impulso",
+  "appName": "IMPULSO",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

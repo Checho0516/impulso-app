@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F8F2E8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="IMPULSO">
+  <title>IMPULSO — Tu próximo paso</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231B4D3A'/%3E%3Ccircle cx='32' cy='14' r='5' fill='%23F29A4A'/%3E%3Cpath d='M14 50C14 36 21 27 32 27C43 27 50 36 50 50' fill='none' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M22 50L32 35L37 42L41 37L48 50Z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="IMPULSO inicio">
+        <svg class="brand-svg" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="32" cy="9" r="5.5" fill="#F29A4A"/><path d="M12 53C12 35 20 23 32 23C44 23 52 35 52 53" stroke="#1B4D3A" stroke-width="7" stroke-linecap="round"/><path d="M21 53L32 34L38 43L43 37L52 53Z" fill="#1B4D3A"/></svg>
+        <span class="brand-name">IMPULSO</span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-button new-chat" id="newSessionBtn" title="Nueva conversación" aria-label="Nueva conversación">Nueva conversación</button>
+      </div>
+    </header>
+
+    <main class="main-content" id="main">
+      <section class="hero" id="homeView">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="status-dot"></span> Estoy acá con vos</div>
+          <h1>No necesitás<br><em>resolverlo todo</em> hoy.</h1>
+          <p>Decime qué tenés adelante. Vamos a encontrar juntos un próximo paso que puedas hacer ahora.</p>
+        </div>
+
+        <div class="hero-mark" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="32" cy="9" r="5.5" fill="#F29A4A"/><path d="M12 53C12 35 20 23 32 23C44 23 52 35 52 53" stroke="#1B4D3A" stroke-width="7" stroke-linecap="round"/><path d="M21 53L32 34L38 43L43 37L52 53Z" fill="#1B4D3A"/></svg></div>
+
+        <div class="composer-card">
+          <div class="composer-label">¿Qué está ocupando tu cabeza?</div>
+          <textarea id="userInput" rows="3" placeholder="Por ejemplo: tengo que estudiar, pero no logro empezar…" autocomplete="off"></textarea>
+          <div class="composer-footer">
+            <span class="hint">Podés escribirlo como te salga.</span>
+            <button class="primary-button" id="sendBtn">Empezar <span>→</span></button>
+          </div>
+        </div>
+        <p class="safety-note">IMPULSO no reemplaza a un profesional de la salud. Si estás en peligro o pensando en hacerte daño, llamá ya al 911 o al 107, o buscá a una persona de confianza cerca tuyo.</p>
+      </section>
+
+      <section class="quick-start" aria-label="Formas de empezar">
+        <div class="section-heading">
+          <span>Elegí un camino</span>
+          <small>No hay una forma correcta</small>
+        </div>
+        <div class="path-grid">
+          <button class="path-card" data-prompt="Quiero avanzar con algo que vengo postergando.">
+            <span class="path-icon">↗</span><span><strong>Avanzar</strong><small>Quiero empezar algo.</small></span><b>→</b>
+          </button>
+          <button class="path-card" data-prompt="Tengo muchas cosas en la cabeza y necesito ordenarlas.">
+            <span class="path-icon">◌</span><span><strong>Ordenar</strong><small>Necesito bajar el ruido.</small></span><b>→</b>
+          </button>
+          <button class="path-card" data-prompt="Tengo que tomar una decisión y no sé qué hacer.">
+            <span class="path-icon">◇</span><span><strong>Decidir</strong><small>Necesito claridad.</small></span><b>→</b>
+          </button>
+          <button class="path-card" data-prompt="Hoy necesito recomenzar porque tuve un día difícil.">
+            <span class="path-icon">↺</span><span><strong>Empezar de nuevo</strong><small>Quiero volver a intentarlo.</small></span><b>→</b>
+          </button>
+        </div>
+      </section>
+
+      <section class="conversation hidden" id="conversationView">
+        <div class="conversation-header">
+          <button class="back-button" id="backBtn">← Volver</button>
+          <div class="session-title"><span class="mini-mark"></span><span>IMPULSO</span></div>
+          <span class="session-state" id="sessionState">En curso</span>
+        </div>
+
+        <div class="progress-strip" id="progressStrip">
+          <div><span>Ahora</span><strong id="currentStepLabel">Entender qué necesitás</strong></div>
+          <div class="progress-line"><i id="progressLine"></i></div>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="action-bar hidden" id="actionBar">
+          <button id="doneBtn">✓ Lo hice</button>
+          <button id="restBtn">◷ Necesito descansar</button>
+          <button id="stuckBtn">? Me trabé</button>
+        </div>
+
+        <div class="chat-composer">
+          <textarea id="chatInput" rows="2" placeholder="Contame qué pasó…" autocomplete="off"></textarea>
+          <button class="send-round" id="chatSendBtn" aria-label="Enviar">↑</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>IMPULSO</span><span>•</span><span>No estás solo en esto.</span><span>•</span><a href="https://checho0516.github.io/impulso/privacidad.html" target="_blank" rel="noopener">Privacidad</a><span>·</span><a href="https://checho0516.github.io/impulso/terminos.html" target="_blank" rel="noopener">Términos</a>
+    </footer>
+  </div>
+  <script src="app.js" defer></script>
+<script>
+if ('serviceWorker' in navigator && /^https?:/.test(location.protocol) && !window.Capacitor) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
+</body>
+</html>
