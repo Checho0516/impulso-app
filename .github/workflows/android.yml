@@ -1,0 +1,50 @@
+name: Compilar app Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Crear el proyecto de Android
+        run: npx cap add android
+
+      - name: Poner el ícono y la pantalla de inicio
+        run: |
+          npm install --no-save @capacitor/assets
+          npx @capacitor/assets generate --android
+
+      - name: Sincronizar los archivos de la app
+        run: npx cap sync android
+
+      - name: Compilar la app de prueba (APK)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Guardar el APK para descargarlo
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-de-prueba
+          path: android/app/build/outputs/apk/debug/app-debug.apk
